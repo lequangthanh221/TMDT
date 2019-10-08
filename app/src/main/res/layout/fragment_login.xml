@@ -105,7 +105,17 @@
                 <!--android:paddingLeft="20dp"-->
                 <!--android:textColor="#ffffff"-->
                 <!--android:textSize="20dp"/>-->
-
+                <TextView
+                    android:layout_marginTop="200dp"
+                    android:id="@+id/btnAdmin"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:fontFamily="sans-serif"
+                    android:text="Đăng nhập Trang Quản lý"
+                    android:textAlignment="center"
+                    android:textColor="#ffffff"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
             </LinearLayout>
         </ScrollView>
     </LinearLayout>

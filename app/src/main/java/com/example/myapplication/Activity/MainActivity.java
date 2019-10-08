@@ -6,6 +6,8 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 
 import com.example.myapplication.Fragment.MainFragment;
 import com.example.myapplication.R;
