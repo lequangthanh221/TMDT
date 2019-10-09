@@ -4,10 +4,10 @@
         android:id="@+id/menuChinhSua"
         android:icon="@drawable/setting"
         android:title="Chỉnh sửa"
-        app:showAsAction="never" />
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/menuThoat"
         android:icon="@drawable/logout"
         android:title="Đăng xuất"
-        app:showAsAction="never" />
+        app:showAsAction="ifRoom" />
 </menu>

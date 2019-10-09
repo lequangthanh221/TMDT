@@ -14,8 +14,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.myapplication.Activity.LoginActivity;
+import com.example.myapplication.Activity.MainActivity;
 import com.example.myapplication.Activity.RegisterActivity;
 import com.example.myapplication.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -37,6 +40,7 @@ public class IntroFragment extends Fragment {
 
     Button mBtnDangnhap, mBtnDangky;
 
+    FirebaseUser firebaseUser;
     private OnFragmentInteractionListener mListener;
 
     public IntroFragment() {
@@ -59,6 +63,21 @@ public class IntroFragment extends Fragment {
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    //Giu phien dang nhap
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        //redirect if user is not null
+        if (firebaseUser != null){
+            Intent intent = new Intent(getContext(), MainActivity.class);
+            startActivity(intent);
+            getActivity().finish();
+        }
     }
 
     @Override

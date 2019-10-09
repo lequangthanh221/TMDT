@@ -1,5 +1,6 @@
 package com.example.myapplication.Fragment.Main;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -8,10 +9,15 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 import android.widget.Toolbar;
 
+import com.example.myapplication.Activity.EditProfileActivity;
+import com.example.myapplication.Activity.LogoutActivity;
+import com.example.myapplication.Activity.RegisterActivity;
 import com.example.myapplication.R;
 
 public class UserFragment extends Fragment {
@@ -55,6 +61,22 @@ public class UserFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.user_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menuChinhSua:
+                this.startActivity(new Intent(getContext(), EditProfileActivity.class));
+                break;
+            case R.id.menuThoat:
+                this.startActivity(new Intent(getContext(), LogoutActivity.class));
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+        return true;
     }
 
     @Override

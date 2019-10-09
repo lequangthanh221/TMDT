@@ -1,22 +1,36 @@
 package com.example.myapplication.Fragment;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.myapplication.Activity.MainActivity;
+import com.example.myapplication.Activity.RegisterActivity;
 import com.example.myapplication.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -39,6 +53,9 @@ public class LoginFragment extends Fragment {
     EditText mEmail, mPassword;
     Button mLogin;
     TextView mSignup;
+
+    FirebaseAuth auth;
+    ProgressDialog pd;
 
     private OnFragmentInteractionListener mListener;
 
@@ -80,12 +97,60 @@ public class LoginFragment extends Fragment {
         mEmail = getActivity().findViewById(R.id.email);
         mPassword = getActivity().findViewById(R.id.password);
         mLogin = getActivity().findViewById(R.id.login);
+        mSignup = getActivity().findViewById(R.id.txt_signup);
 
+        auth = FirebaseAuth.getInstance();
+
+        //Text Dang ky
+        mSignup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), RegisterActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        //Button Dang nhap
         mLogin.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(), MainActivity.class);
-                startActivity(intent);
+            public void onClick(View view) {
+                pd = new ProgressDialog(getContext());
+                pd.setMessage("Vui lòng đợi...");
+                pd.show();
+
+                String str_email = mEmail.getText().toString();
+                String str_password = mPassword.getText().toString();
+
+                //Kiem tra rang buoc
+                if (TextUtils.isEmpty(str_email) || TextUtils.isEmpty(str_password)) {
+                    Toast.makeText(getContext(), "Vui lòng nhập đầy đủ tất cả thông tin!", Toast.LENGTH_SHORT).show();
+                } else {
+
+                    auth.signInWithEmailAndPassword(str_email, str_password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()){
+                                DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("users").child((auth.getCurrentUser().getUid()));
+
+                                reference.addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        Intent intent = new Intent(getContext(), MainActivity.class);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        startActivity(intent);
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                    }
+                                });
+                            }else {
+                                Toast.makeText(getContext(), "Đã xảy ra lỗi!", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                }
             }
         });
     }
