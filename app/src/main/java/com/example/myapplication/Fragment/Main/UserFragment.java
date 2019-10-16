@@ -67,10 +67,10 @@ public class UserFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menuChinhSua:
-                this.startActivity(new Intent(getContext(), EditProfileActivity.class));
+                this.startActivity(new Intent(getActivity().getApplicationContext(), EditProfileActivity.class));
                 break;
             case R.id.menuThoat:
-                this.startActivity(new Intent(getContext(), LogoutActivity.class));
+                this.startActivity(new Intent(getActivity().getApplicationContext(), LogoutActivity.class));
                 break;
             default:
                 return super.onOptionsItemSelected(item);
